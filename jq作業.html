@@ -1,0 +1,196 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <title> JQuery-樂透作業</title>
+
+
+
+
+    <style>
+        .wrap {
+            padding: 1em;
+        }
+
+        button {
+            font-size: 22px;
+        }
+
+        .lottery-nums {
+            overflow: hidden;
+            width: 600px;
+        }
+
+            .lottery-nums > div {
+                display: block;
+                float: left;
+                width: 25px;
+                height: 25px;
+                border: 1px solid #999;
+                background-color: #fff;
+                color: #555;
+                font-size: 20px;
+                padding: 10px;
+                text-align: center;
+                line-height: 25px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+            .lottery-nums .selected {
+                background-color: green;
+                color: #fff;
+            }
+
+            .lottery-nums .highlight {
+                background-color: red;
+                color: #fff;
+            }
+
+            .lottery-nums .selected.highlight {
+                background-color: yellow;
+                color: #333;
+            }
+    </style>
+
+    <script>
+        window.console = window.console || function (t) { };
+    </script>
+
+
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+
+</head>
+
+<body translate="no">
+    <div class="wrap">
+
+        <div class="lottery-nums"></div>
+        <div class="lottery-result">開獎號碼: <span></span></div>
+
+        <p>
+            <button class="btn-lottery">開獎</button>
+            <button class="reset">重設</button>
+        </p>
+
+        <hr>
+        <p class="record">
+            開獎紀錄:
+        </p>
+
+    </div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script id="rendered-js">
+        
+        var times = 0;
+
+  
+        for (var i = 1; i < 50; i++) {
+            if (window.CP.shouldStopExecution(0)) break;
+            $('.lottery-nums').append('<div>' + i + '</div>');
+        }
+
+        
+        window.CP.exitedLoop(0); $('.lottery-nums div').on('click', function () {
+            if ($('.selected').length < 6) {
+                $(this).addClass('selected');
+            }
+        });
+
+       
+        $('.reset').on('click', function () {
+            $('.lottery-nums div').removeClass('highlight selected');
+        });
+
+
+        
+        $('.btn-lottery').on('click', function () {
+
+           
+            $('.lottery-nums div.highlight').removeClass('highlight');
+
+            var selected_box = $('.selected').length;
+
+           
+            if (selected_box < 6) {
+                alert('注意！您尚未選取六位數');
+                return ture;
+            }
+
+
+            
+            var lottery = [], number;
+
+            while (lottery.length < 6) {
+                if (window.CP.shouldStopExecution(1)) break;
+                number = parseInt(Math.random() * 49 + 1, 10);
+
+                if (lottery.indexOf(number) === -1) {
+                    lottery.push(number);
+                }
+            } window.CP.exitedLoop(1);
+
+            console.log(lottery);
+
+            
+            for (i = 0; i < lottery.length; i++) {
+                if (window.CP.shouldStopExecution(2)) break;
+                $('.lottery-nums div').eq(lottery[i] - 1).addClass('highlight');
+            }
+
+            
+            window.CP.exitedLoop(2); var new_numbers = '';
+
+           
+            for (var n = 0; n < lottery.length; n++) {
+                if (window.CP.shouldStopExecution(3)) break;
+                new_numbers += lottery[n];
+                if (n < 5) {
+                    new_numbers += ',';
+                }
+            }
+
+            
+            window.CP.exitedLoop(3); $('span').text(new_numbers);
+
+
+            times++;
+            console.log(times);
+
+            
+            $('.record').append('<div>' + '第' + times + '次：' + new_numbers + '</div>');
+
+
+          
+            var bingo = $('.selected.highlight').length;
+
+        
+            alert('您兌中' + bingo + '位數');
+
+
+        });
+
+    </script>
+
+
+
+</body>
+
+</html>
+
